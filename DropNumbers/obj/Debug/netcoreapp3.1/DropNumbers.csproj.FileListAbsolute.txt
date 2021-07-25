@@ -1,0 +1,13 @@
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.exe
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.deps.json
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.runtimeconfig.json
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.runtimeconfig.dev.json
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.dll
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\bin\Debug\netcoreapp3.1\DropNumbers.pdb
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.csproj.AssemblyReference.cache
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.AssemblyInfoInputs.cache
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.AssemblyInfo.cs
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.csproj.CoreCompileInputs.cache
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.dll
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.pdb
+D:\Skillbox\CSharp\hw6_skillbox-csharp_IOFiles\DropNumbers\DropNumbers\obj\Debug\netcoreapp3.1\DropNumbers.genruntimeconfig.cache
