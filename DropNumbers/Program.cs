@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace DropNumbers
 {
     class Program
     {
-        static private int dropNumber;
+        static private int dropNumber = 0;
         private static string pathToFileForRead = "";
         private static string pathToFileForWrite = "";
 
         /// <summary>
-        /// Получает путь к файлу и возвращает его
+        /// Получает путь к файлу и возвращает его. Если путь не указан, будет искать файл Number.txt в каталоге программы.
         /// </summary>
         /// <returns>Путь к файлу string</returns>
-        private static string GetPathToFile()
+        /// <param name="expansion">Расширение файла, по умолчанию .txt</param>
+        private static string GetPathToFile(string expansion = ".txt")
         {
             Console.WriteLine("Укажите путь к файлу:");
             string path = Console.ReadLine();
@@ -22,9 +24,9 @@ namespace DropNumbers
             {
                 path = "Number.txt";
             }
-            if (path.EndsWith(".txt") == false)
+            if (path.EndsWith(expansion) == false)
             {
-                path += ".txt";
+                path += expansion;
             }
             return path;
         }
@@ -34,19 +36,17 @@ namespace DropNumbers
         /// </summary>
         private static void GetNumberFromFile()
         {
-            int number = 0;
             try
             {
                 using (StreamReader readNumber = new StreamReader(pathToFileForRead))
                 {
-                    number = Convert.ToInt32(readNumber.ReadLine());
+                    dropNumber = Convert.ToInt32(readNumber.ReadLine());
                 }
             }
             catch (FormatException)
             {
                 Console.WriteLine("Файл не содержит данных подходящих под описание целого цисла!");
             }
-            dropNumber = number;
         }
 
         /// <summary>
@@ -76,29 +76,33 @@ namespace DropNumbers
         static void DropNumber()
         {
             int incCountGroups = 1;
-            Console.WriteLine("ЗАПИСЬ ФАЙЛА");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Запись файла");
+            Console.ResetColor();
             pathToFileForWrite = GetPathToFile(); // получаем путь к файлу для записи
-            Console.WriteLine($"Путь к файлу для записи - {pathToFileForWrite}");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Запись начата");
+            Console.ResetColor();
+            WriteStringInFile("Время начала записи - " + DateTime.Now.ToString() + "\n", pathToFileForWrite);
             string stringForWrite = $"Группа {incCountGroups}\n"; 
-            Console.Write($"Группа {incCountGroups}\n");
             for (int i = 1; i <= dropNumber; i++)
             {
                 if (i < Math.Pow(2, incCountGroups))
                 {
                     stringForWrite += $"{i} ";
-                    Console.Write($"{i} ");
                 }
                 else
                 {
-                    WriteStringInFile(stringForWrite, pathToFileForWrite);
+                    WriteStringInFile(stringForWrite, pathToFileForWrite); // записывает строку в файл
                     incCountGroups++;
-                    stringForWrite = $"\nГруппа {incCountGroups}\n{i} ";
-                    Console.Write($"\nГруппа {incCountGroups}");
-                    Console.Write($"\n{i} ");
-                        
+                    stringForWrite = $"\nГруппа {incCountGroups}\n{i} "; // обновняет строку записи для дальнейшей работы                
                 }
             }
-            WriteStringInFile(stringForWrite, pathToFileForWrite);
+            WriteStringInFile(stringForWrite, pathToFileForWrite); // записывает последнюю строку
+            WriteStringInFile("\nВремя завершния записи - " + DateTime.Now.ToString(), pathToFileForWrite);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Запись закончена");
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -116,17 +120,47 @@ namespace DropNumbers
             return false;
         }
 
+        /// <summary>
+        /// Дозаписывает данные в файл
+        /// </summary>
+        /// <param name="dataForWrite">Данные для записи</param>
+        /// <param name="pathToFileForWrite">Путь к записываемому файлу</param>
         private static void WriteStringInFile(string dataForWrite, string pathToFileForWrite)
         {
-            Console.WriteLine("Началась запись");
             using (StreamWriter writeInFile = new StreamWriter(pathToFileForWrite, true))
             {
                 writeInFile.Write(dataForWrite, true);
             }
         }
 
+        /// <summary>
+        /// Архивирует файл
+        /// </summary>
+        /// <param name="pathToFileSource">Путь к файлу для архивации</param>
+        /// <param name="pathToFileCompress">Путь к архиву</param>
+        private static void ArchiveFile(string pathToFileSource, string pathToFileCompress)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Архивация файла!");
+            Console.ResetColor();
+            using (FileStream fileSource = new FileStream(pathToFileSource, FileMode.Open))
+            {
+                using (FileStream fileCompress = File.Create(pathToFileCompress))
+                {
+                    using (GZipStream archive = new GZipStream(fileCompress, CompressionMode.Compress))
+                    {
+                        fileSource.CopyTo(archive);
+                        Console.WriteLine($"Размер файла {pathToFileForWrite} до архивации составлял - {fileSource.Length} и стал - {fileCompress.Length}");
+                    }
+                }
+            } 
+        }
+
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Разбиваем числа на группы взаимно не делимых чисел.");
+            Console.ResetColor();
             bool flag = true;
             while (flag)
             {
@@ -141,14 +175,7 @@ namespace DropNumbers
                     }
                     break;
                 }
-
-                Console.WriteLine("файл проверен");
-
-                GetNumberFromFile(); // получаем число из файла
-
-                Console.WriteLine("получили число");
-
-                Console.WriteLine(GetNumberGroups());
+                GetNumberFromFile();
                 if (CheckDropNumber())
                 {
                     Console.WriteLine("Вывести в консоль количество групп или только записать в файл? (да/нет)");
@@ -157,20 +184,20 @@ namespace DropNumbers
                     {
                         Console.WriteLine(GetNumberGroups());
                         DropNumber();
-                        break;
                     }
                     else
                     {
                         DropNumber();
-                        break;
-                    }
-                    
+                    }                   
                 }
+                Console.WriteLine("Желаете заархивировать файл? (да/нет)");
+                string flagArchive = Console.ReadLine();
+                if (flagArchive.ToLower().StartsWith('д'))
+                {
+                    ArchiveFile(pathToFileForWrite, GetPathToFile(".zip"));
+                }
+                if (StartAgain()) { continue; } else { break; }
             }
-
-            //Console.WriteLine(GetNumberFromFile());
-
-            //WriteStringInFile("привет", "Hello.txt");
         }
 
     }
