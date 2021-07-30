@@ -84,21 +84,19 @@ namespace DropNumbers
             Console.WriteLine("Запись начата");
             Console.ResetColor();
             WriteStringInFile("Время начала записи - " + DateTime.Now.ToString() + "\n", pathToFileForWrite);
-            string stringForWrite = $"Группа {incCountGroups}\n"; 
+            WriteStringInFile($"Группа {incCountGroups}\n", pathToFileForWrite);
             for (int i = 1; i <= dropNumber; i++)
             {
                 if (i < Math.Pow(2, incCountGroups))
                 {
-                    stringForWrite += $"{i} ";
+                    WriteStringInFile($"{i} ", pathToFileForWrite);
                 }
                 else
                 {
-                    WriteStringInFile(stringForWrite, pathToFileForWrite); // записывает строку в файл
-                    incCountGroups++;
-                    stringForWrite = $"\nГруппа {incCountGroups}\n{i} "; // обновняет строку записи для дальнейшей работы                
+                    WriteStringInFile($"\nГруппа {incCountGroups}\n{i} ", pathToFileForWrite); // записывает строку в файл
+                    incCountGroups++;              
                 }
             }
-            WriteStringInFile(stringForWrite, pathToFileForWrite); // записывает последнюю строку
             WriteStringInFile("\nВремя завершния записи - " + DateTime.Now.ToString(), pathToFileForWrite);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Запись закончена");
