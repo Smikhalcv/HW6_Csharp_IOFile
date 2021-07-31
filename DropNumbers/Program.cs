@@ -76,6 +76,12 @@ namespace DropNumbers
         static void DropNumber()
         {
             int incCountGroups = 1;
+            int maxCountGroups = GetNumberGroups();
+            int[] boundaryValues = new int[maxCountGroups]; // массив граничных значений для сравнения
+            for (int i = 1; i <= maxCountGroups; i++)   // заполнния массива граничных значений
+            {
+                boundaryValues[i - 1] = (int)Math.Pow(2, Convert.ToDouble(i));
+            }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Запись файла");
             Console.ResetColor();
@@ -85,16 +91,19 @@ namespace DropNumbers
             Console.ResetColor();
             WriteStringInFile("Время начала записи - " + DateTime.Now.ToString() + "\n", pathToFileForWrite);
             WriteStringInFile($"Группа {incCountGroups}\n", pathToFileForWrite);
-            for (int i = 1; i <= dropNumber; i++)
+            using (StreamWriter writeInFile = new StreamWriter(pathToFileForWrite, true))
             {
-                if (i < Math.Pow(2, incCountGroups))
+                for (int i = 1; i <= dropNumber; i++)
                 {
-                    WriteStringInFile($"{i} ", pathToFileForWrite);
-                }
-                else
-                {
-                    WriteStringInFile($"\nГруппа {incCountGroups}\n{i} ", pathToFileForWrite); // записывает строку в файл
-                    incCountGroups++;              
+                    if (i < boundaryValues[incCountGroups - 1])
+                    {
+                        writeInFile.Write($"{i} ", true);
+                    }
+                    else
+                    {
+                        incCountGroups++;
+                        writeInFile.Write($"\nГруппа {incCountGroups}\n{i} ", true);
+                    }
                 }
             }
             WriteStringInFile("\nВремя завершния записи - " + DateTime.Now.ToString(), pathToFileForWrite);
